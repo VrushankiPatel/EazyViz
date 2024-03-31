@@ -97,6 +97,7 @@ applications:
         set -eux
         pip install Flask
         pip install openai
+        export OPENAI_API_KEY=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
 
         # Add build steps here.
         # echo 'I am a build step'
