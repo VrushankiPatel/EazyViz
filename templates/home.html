@@ -3,171 +3,164 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HELPER - File Upload</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
             background-color: #000;
             color: #fff;
             text-align: center;
+            height: 100vh;
+        }
+
+        .navbar,
+        .container {
+            background-color: #333;
+            padding: 10px 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
         .navbar {
-            background-color: #000;
-            /* Navbar background color set to black */
+            position: relative;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .window-controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .window-control {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 0 4px;
+        }
+
+        .close {
+            background-color: #ff5f57;
+        }
+
+        .minimize {
+            background-color: #ffbd2e;
+        }
+
+        .maximize {
+            background-color: #28c940;
+        }
+
+        .file-selection {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .file-selection button {
             padding: 10px 20px;
-            text-align: center;
+            margin: 0 10px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        .navbar h1 {
-            margin: 0;
-            font-size: 28px;
-        }
-
-        .container {
-            width: 80%;
-            margin: 20px auto;
+        .file-selection button.active {
             background-color: #222;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        }
-
-        h2 {
-            text-align: center;
         }
 
         .form-group {
-            margin-bottom: 20px;
-            text-align: center;
+            margin: 20px 0;
         }
 
         .form-group label {
-            font-weight: bold;
             display: block;
+            margin-bottom: 5px;
         }
 
-        .form-group input[type="file"] {
-            display: block;
-            margin: 5px auto;
-        }
-
-        .form-group button {
+        .upload-btn {
             padding: 10px 20px;
-            background-color: transparent;
+            background-color: #000;
             color: #fff;
-            border: 1px solid #666;
+            border: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
+            transition: background-color 0.3s ease;
         }
 
-        .form-group button:hover {
+        .upload-btn:hover {
             background-color: #222;
-            /* Darker shade of black on hover */
-            border-color: #fff;
-            /* White border on hover */
-        }
-
-        .upload-option {
-            display: none;
         }
     </style>
 </head>
 
 <body>
     <div class="navbar">
+        <div class="window-controls">
+            <div class="window-control close"></div>
+            <div class="window-control minimize"></div>
+            <div class="window-control maximize"></div>
+        </div>
         <h1>HELPER</h1>
     </div>
 
     <div class="container">
-        <h3>Select File Type to Upload:</h3>
-        <button onclick="toggleUpload('domOption')">DOM Files</button> <!-- Changed text to "DOM Files" -->
-        <button onclick="toggleUpload('harOption')">HAR Files</button>
-    </div>
-
-    <div class="container upload-option" id="domOption"> <!-- Changed id to "domOption" -->
-        <h2>Upload DOM Files</h2> <!-- Changed title to "Upload DOM Files" -->
-        <form id="domUploadForm" enctype="multipart/form-data"> <!-- Changed id to "domUploadForm" -->
-            <div class="form-group">
-                <label for="domFile">Select DOM File:</label> <!-- Changed label text to "Select DOM File" -->
-                <input type="file" id="domFile" name="domFile"> <!-- Changed id and name to "domFile" -->
-            </div>
-            <div class="form-group">
-                <button type="submit">Upload DOM File</button> <!-- Changed button text to "Upload DOM File" -->
-            </div>
-        </form>
-        <div id="domProgress"></div> <!-- Changed id to "domProgress" -->
-        <div id="domMessage"></div> <!-- Changed id to "domMessage" -->
-    </div>
-
-    <div class="container upload-option" id="harOption">
-        <h2>Upload HAR Files</h2>
-        <form id="harUploadForm" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="harFile">Select HAR File:</label>
-                <input type="file" id="harFile" name="harFile">
-            </div>
-            <div class="form-group">
-                <button type="submit">Upload HAR File</button>
-            </div>
-        </form>
-        <div id="harProgress"></div>
-        <div id="harMessage"></div>
+        <div class="file-selection">
+            <button id="domButton" class="active">DOM Files</button>
+            <button id="harButton">HAR Files</button>
+        </div>
+        <div class="form-group">
+            <label for="fileInput">Select File:</label>
+            <input type="file" id="fileInput" accept=".dom,.har">
+        </div>
+        <button id="uploadBtn" class="upload-btn">Upload File</button>
     </div>
 
     <script>
-        function toggleUpload(option) {
-            var options = document.querySelectorAll('.upload-option');
-            for (var i = 0; i < options.length; i++) {
-                options[i].style.display = 'none';
-            }
-            document.getElementById(option).style.display = 'block';
-        }
+        const domButton = document.getElementById('domButton');
+        const harButton = document.getElementById('harButton');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
 
-        document.getElementById("domUploadForm").addEventListener('submit', function (e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'upload.php'); // Replace 'upload.php' with the path to your server-side upload script
-            xhr.upload.onprogress = function (e) {
-                if (e.lengthComputable) {
-                    var percentComplete = (e.loaded / e.total) * 100;
-                    document.getElementById('domProgress').innerHTML = 'Upload Progress: ' + percentComplete.toFixed(2) + '%';
-                }
-            };
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    document.getElementById('domMessage').innerHTML = 'DOM file uploaded successfully!';
-                } else {
-                    document.getElementById('domMessage').innerHTML = 'An error occurred while uploading the DOM file.';
-                }
-            };
-            xhr.send(formData);
+        domButton.addEventListener('click', function () {
+            setActiveFileType('.dom');
         });
 
-        document.getElementById("harUploadForm").addEventListener('submit', function (e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'upload.php'); // Replace 'upload.php' with the path to your server-side upload script
-            xhr.upload.onprogress = function (e) {
-                if (e.lengthComputable) {
-                    var percentComplete = (e.loaded / e.total) * 100;
-                    document.getElementById('harProgress').innerHTML = 'Upload Progress: ' + percentComplete.toFixed(2) + '%';
-                }
-            };
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    document.getElementById('harMessage').innerHTML = 'HAR file uploaded successfully!';
-                } else {
-                    document.getElementById('harMessage').innerHTML = 'An error occurred while uploading the HAR file.';
-                }
-            };
-            xhr.send(formData);
+        harButton.addEventListener('click', function () {
+            setActiveFileType('.har');
+        });
+
+        function setActiveFileType(fileType) {
+            fileInput.setAttribute('accept', fileType);
+            domButton.classList.toggle('active', fileType === '.dom');
+            harButton.classList.toggle('active', fileType === '.har');
+            fileInput.value = ''; // Reset file input
+            uploadBtn.style.display = 'none'; // Hide upload button until new file is chosen
+        }
+
+        fileInput.addEventListener('change', function () {
+            if (fileInput.files.length > 0) {
+                uploadBtn.style.display = 'inline-block';
+            } else {
+                uploadBtn.style.display = 'none';
+            }
+        });
+
+        uploadBtn.addEventListener('click', function () {
+            // Implement the actual upload functionality here
+            alert('Upload functionality to be implemented.');
         });
     </script>
 </body>
