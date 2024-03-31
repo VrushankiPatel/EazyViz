@@ -219,4 +219,4 @@ def get_generated_dom_image():
         return 'Error generating or retrieving the image', 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5051)
+    app.run(debug=True)
