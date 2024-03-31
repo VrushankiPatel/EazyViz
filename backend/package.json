@@ -1,0 +1,22 @@
+{
+    "name": "my_project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "convert.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^1.6.8",
+        "bluebird": "^3.7.2",
+        "body-parser": "^1.20.2",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "mkdirp": "^3.0.1",
+        "openai": "^4.31.0",
+        "puppeteer": "^22.6.1",
+        "puppeteer-har": "^1.1.2"
+    }
+}

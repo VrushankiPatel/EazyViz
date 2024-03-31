@@ -1,0 +1,29 @@
+digraph APIFlowchart {
+            // Global settings for appearance
+            node [shape=box, style="filled", fontname="Arial"];
+            edge [fontname="Arial"];
+            // Start of the API flow
+            start [label="Start", shape=oval, fillcolor="#D3D3D3"];
+        
+            // API Call Nodes
+            "POST https://api.github.com/_private/browser/stats" [label="POST https://api.github.com/_private/browser/stats
+", shape=box, fillcolor="#90EE90"];
+            
+        
+            // Outcome Status Nodes
+            success [label="Success", shape=ellipse, fillcolor="#98FB98"];
+            failure [label="Failure", shape=ellipse, fillcolor="#FF6347"];
+        
+            // Flow and Decisions
+            start -> "POST https://api.github.com/_private/browser/stats"
+            
+        
+            // Actual Outcomes as per CSV data (highlighted path)
+            "POST https://api.github.com/_private/browser/stats"  ;
+            
+        
+            // Customizing the appearance
+            label="API Call Flowchart:";
+            fontsize=20;
+            labelloc="t";
+        }
