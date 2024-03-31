@@ -68,7 +68,7 @@ def test_convert_dom():
         convertDotToPng(dot_content, dotFilePath, output_image_path)
         # Render HTML template with image
         # Assuming the image is in the same directory as the Flask app
-        return render_template('home.html', showSection(harSection), dom_image_url=output_image_path)
+        return render_template('home.html', dom_image_url=output_image_path)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -164,7 +164,7 @@ def test_convert_har():
         
 
        
-        use this csvData: ${csvData} and dot give in response show status code
+        use this csvData: ${csvData} and dot give in response show status
 
         make this string of dot file having digraph APIFlowchart {} having csvData replaced from above
         """

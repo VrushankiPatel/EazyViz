@@ -6,22 +6,25 @@ digraph APIFlowchart {
             start [label="Start", shape=oval, fillcolor="#D3D3D3"];
         
             // API Call Nodes
-            "GET https://api.example.com" [label="GET https://api.example.com\n200 OK", shape=box, fillcolor="#90EE90"];
-            "POST https://api.example.com" [label="POST https://api.example.com\n404 Not Found", shape=box, fillcolor="#FF6347"];
-            "PUT https://api.example.com" [label="PUT https://api.example.com\n200 OK", shape=box, fillcolor="#90EE90"];
+            "GET /api/user" [label="GET /api/user\nSuccess", shape=box, fillcolor="#90EE90"];
+            "POST /api/user" [label="POST /api/user\nFailure", shape=box, fillcolor="#FF6347"];
+            "GET /api/user/1" [label="GET /api/user/1\nSuccess", shape=box, fillcolor="#90EE90"];
+            "GET /api/user/2" [label="GET /api/user/2\nSuccess", shape=box, fillcolor="#90EE90"];
         
             // Outcome Status Nodes
             success [label="Success", shape=ellipse, fillcolor="#98FB98"];
             failure [label="Failure", shape=ellipse, fillcolor="#FF6347"];
         
             // Flow and Decisions
-            start -> "GET https://api.example.com";
-            "GET https://api.example.com" -> "POST https://api.example.com" [color="red"];
-            "POST https://api.example.com" -> "PUT https://api.example.com" [color="blue"];
+            start -> "GET /api/user"
+            "GET /api/user" -> "POST /api/user" [color="red"];
+            "POST /api/user" -> "GET /api/user/1" [color="red"];
+            "GET /api/user/1" -> "GET /api/user/2" [color="blue"];
         
             // Actual Outcomes as per CSV data (highlighted path)
-            "GET https://api.example.com"  ;
-            "POST https://api.example.com"  ;
+            "GET /api/user"  ;
+            "POST /api/user"  ;
+            "GET /api/user/1"  ;
         
             // Customizing the appearance
             label="API Call Flowchart:";
