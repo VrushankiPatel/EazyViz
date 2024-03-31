@@ -3,7 +3,8 @@ import subprocess
 import json
 import os
 from openai import OpenAI
-client = OpenAI()
+
+open_client = OpenAI()
 
 app = Flask(__name__)
 
@@ -14,13 +15,14 @@ def index():
 
 def generate_graphviz_dot(prompt):
     try:
-        openai_api_key = 'Y2ZSQacygPY4QJRrZ5f0T3BlbkFJrBvdahRLaoK96boDlNxz'
+        openai_api_key = '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'
+        print(openai_api_key)
         if not openai_api_key:
             raise Exception("OpenAI API key not found in environment variables")
 
         # Call OpenAI API to generate completion
-        completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+        completion = open_client.chat.completions.create(
+            model="gpt-3.5-turbo-16k",
             messages=[{"role": "user", "content": prompt}],
             temperature=1,
             max_tokens=4096,
@@ -42,46 +44,33 @@ def generate_graphviz_dot(prompt):
 def test_convert_dom():
     try:
         url = request.form.get('URL')  # Get URL from the form
+        uploaded_file = request.files.get('htmlFile') 
+        html_content = ""
+        if uploaded_file and uploaded_file.filename != '':
+            html_content = uploaded_file.read().decode('utf-8')
         print(url)
-        if not url:
-            return jsonify({'error': 'URL is missing in the form data.'}), 400
+        print(html_content)
+        if not url and not html_content:
+            return jsonify({'error': 'URL and file is missing in the form data.'}), 400
         
-        prompt = """Given a URL pointing to an HTML document, create a Graphviz DOT file that represents its Document Object Model (DOM). Filter out unnecessary HTML elements like meta. The DOT file should illustrate the hierarchical structure of HTML elements, with each element represented as a node. Parent-child relationships should be shown through edges connecting nodes. Label each node with the HTML element tag, and include id or class attributes if present. Here is the URL:\n\n"${url}"\n\nGenerate the Graphviz DOT representation. Make this string of dot file having digraph use id Node Appearance:
-
-        Original: node [shape=box, style="filled", fontname="Arial"];
-        Replace with: node [shape=ellipse, style="filled", fontname="Arial", fontsize=12];
-        Edge Style:
+        prompt = f"""Given the HTML code or URL to a HTML document, create a Graphviz DOT file that represents its complete Document Object Model (DOM). 
+        Here is the HTML code: {html_content}
+        Here is the URL: {url}
         
-        Original: edge [fontname="Arial"];
-        Replace with: edge [fontname="Arial", color=gray, penwidth=1.5];
-        Label Formatting:
-        
-        Original: ""
-        Replace with: "" [label="", shape=box, fillcolor="#90EE90", fontsize=10];
-
-        Highlighting:
-        
-        Original: fillcolor 
-        Replace with: fillcolor based on tags for each tag each color
-
-       
-        
-        Overall Layout:
-    
-        
-        Rearrange nodes for better flow and spacing 
-        Make this string of dot file having digraph use id,class,type Node connect them according to DOM Appearance include id,class color them according  node apperaces Remove extra string and GIVE ONLY AS STRING remove extra characters other than DOMFlowchart{add this at lastline before "}" } and give as just string`;
+        The output should only be a string starting with "digraph" and ending with a curly brace.
+        No other extra characters.
         """
+
+        print(prompt)
         dot_content = generate_graphviz_dot(prompt)
         output_image_path = 'dom-flow.png'  # Output image path
         dotFilePath = 'dom-flow.dot'
         convertDotToPng(dot_content, dotFilePath, output_image_path)
         # Render HTML template with image
         # Assuming the image is in the same directory as the Flask app
-        return render_template('home.html', dom_image_url=output_image_path)
+        return render_template('home.html', showSection(harSection), dom_image_url=output_image_path)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 
 
 def har_to_csv(input_file):
@@ -175,7 +164,7 @@ def test_convert_har():
         
 
        
-        use this csvData: ${csvData} and dot give in response
+        use this csvData: ${csvData} and dot give in response show status code
 
         make this string of dot file having digraph APIFlowchart {} having csvData replaced from above
         """
@@ -230,4 +219,4 @@ def get_generated_dom_image():
         return 'Error generating or retrieving the image', 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5051)
