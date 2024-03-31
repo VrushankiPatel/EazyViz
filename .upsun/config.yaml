@@ -95,7 +95,9 @@ applications:
       # More information: https://docs.upsun.com/create-apps/hooks/hooks-comparison.html#build-hook
       build: |
         set -eux
-        
+        pip install Flask
+        pip install openai
+
         # Add build steps here.
         # echo 'I am a build step'
         
