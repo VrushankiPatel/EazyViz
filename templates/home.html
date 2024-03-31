@@ -17,59 +17,19 @@
             height: 100vh;
         }
 
-        .navbar,
-        .container {
-            background-color: #333;
-            padding: 10px 20px;
-            margin: 20px auto;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 600px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-        }
-
         .navbar {
-            position: relative;
+            background-color: #333;
+            padding: 10px;
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
-        }
-
-        .window-controls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
-
-        .window-control {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin: 0 4px;
-        }
-
-        .close {
-            background-color: #ff5f57;
-        }
-
-        .minimize {
-            background-color: #ffbd2e;
-        }
-
-        .maximize {
-            background-color: #28c940;
-        }
-
-        .file-selection {
-            display: flex;
-            justify-content: center;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
             margin-bottom: 20px;
         }
 
-        .file-selection button {
-            padding: 10px 20px;
+        .navbar button {
+            padding: 5px 10px;
             margin: 0 10px;
-            background-color: #000;
+            background-color: transparent;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -77,8 +37,18 @@
             transition: background-color 0.3s ease;
         }
 
-        .file-selection button.active {
+        .navbar button:hover {
             background-color: #222;
+        }
+
+        .container {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            margin: 0 auto;
         }
 
         .form-group {
@@ -108,20 +78,12 @@
 
 <body>
     <div class="navbar">
-        <div class="window-controls">
-            <div class="window-control close"></div>
-            <div class="window-control minimize"></div>
-            <div class="window-control maximize"></div>
-        </div>
-        <h1>HELPER</h1>
+        <button id="domNavBtn">DOM Files</button>
+        <button id="harNavBtn">HAR Files</button>
+        <button id="editorNavBtn">Editor</button>
     </div>
 
-    <div class="container">
-        <div class="file-selection">
-            <button id="domButton" class="active">DOM Files</button>
-            <button id="harButton">HAR Files</button>
-        </div>
-        
+    <div class="container" id="domSection">
         <form id="domForm" action="/test-convert-dom" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="domInput">URL:</label>
@@ -132,10 +94,11 @@
             <h2>Generated Image</h2>
             <img src="/get-dom-image" alt="Generated Image">
             {% endif %}
-            
         </form>
-       
-        <form id="harForm" action="/test-convert-har" method="post" enctype="multipart/form-data" style="display: none;">
+    </div>
+
+    <div class="container" id="harSection" style="display: none;">
+        <form id="harForm" action="/test-convert-har" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="harInput">Select File:</label>
                 <input type="file" name="fileUpload" id="harInput">
@@ -146,45 +109,59 @@
             <img src="/get-api-image" alt="Generated Image">
             {% endif %}
         </form>
+    </div>
+
+    <div class="container" id="editorSection" style="display: none;">
+        <button id="textToCodeBtn" class="btn">Text &lt;-&gt; Code</button>
+        <br>
         <br>
         <button id="backBtn" class="btn">Back</button>
         <br>
         <br>
-
-        <button id="editorBtn" class="btn">Editor</button>
-        
     </div>
 
     <script>
-        const domButton = document.getElementById('domButton');
-        const harButton = document.getElementById('harButton');
-        const domForm = document.getElementById('domForm');
-        const harForm = document.getElementById('harForm');
+        const domNavBtn = document.getElementById('domNavBtn');
+        const harNavBtn = document.getElementById('harNavBtn');
+        const editorNavBtn = document.getElementById('editorNavBtn');
 
-        domButton.addEventListener('click', function () {
-            domButton.classList.add('active');
-            harButton.classList.remove('active');
-            domForm.style.display = 'block';
-            harForm.style.display = 'none';
+        const domSection = document.getElementById('domSection');
+        const harSection = document.getElementById('harSection');
+        const editorSection = document.getElementById('editorSection');
+
+        domNavBtn.addEventListener('click', function () {
+            showSection(domSection);
+            hideSection(harSection);
+            hideSection(editorSection);
         });
 
-        harButton.addEventListener('click', function () {
-            harButton.classList.add('active');
-            domButton.classList.remove('active');
-            harForm.style.display = 'block';
-            domForm.style.display = 'none';
+        harNavBtn.addEventListener('click', function () {
+            showSection(harSection);
+            hideSection(domSection);
+            hideSection(editorSection);
         });
 
-        editorBtn.addEventListener('click', function () {
-            window.open('http://localhost:5500'); 
+        editorNavBtn.addEventListener('click', function () {
+            showSection(editorSection);
+            hideSection(domSection);
+            hideSection(harSection);
+        });
+
+        textToCodeBtn.addEventListener('click', function () {
+            window.open('http://localhost:5500/templates/');
         });
 
         backBtn.addEventListener('click', function () {
             window.location.href = 'http://127.0.0.1:5000/';
         });
 
+        function showSection(section) {
+            section.style.display = 'block';
+        }
 
-
+        function hideSection(section) {
+            section.style.display = 'none';
+        }
     </script>
 </body>
 
