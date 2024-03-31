@@ -90,7 +90,7 @@
             margin-bottom: 5px;
         }
 
-        .upload-btn {
+        .btn {
             padding: 10px 20px;
             background-color: #000;
             color: #fff;
@@ -100,7 +100,7 @@
             transition: background-color 0.3s ease;
         }
 
-        .upload-btn:hover {
+        .btn:hover {
             background-color: #222;
         }
     </style>
@@ -121,51 +121,70 @@
             <button id="domButton" class="active">DOM Files</button>
             <button id="harButton">HAR Files</button>
         </div>
-        <div class="form-group">
-            <label for="fileInput">Select File:</label>
-            <input type="file" id="fileInput" accept=".dom,.har">
-        </div>
-        <button id="editorBtn" class="upload-btn">Editor</button>
+        
+        <form id="domForm" action="/test-convert-dom" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="domInput">URL:</label>
+                <input type="text" name="URL" id="domInput">
+            </div>
+            <input type="submit" value="Get DOM" id="domUploadBtn" class="btn">
+            {% if dom_image_url %}
+            <h2>Generated Image</h2>
+            <img src="/get-dom-image" alt="Generated Image">
+            {% endif %}
+            
+        </form>
+       
+        <form id="harForm" action="/test-convert-har" method="post" enctype="multipart/form-data" style="display: none;">
+            <div class="form-group">
+                <label for="harInput">Select File:</label>
+                <input type="file" name="fileUpload" id="harInput">
+            </div>
+            <input type="submit" value="Get Api flow" id="harUploadBtn" class="btn">
+            {% if api_image_url %}
+            <h2>Generated Image</h2>
+            <img src="/get-api-image" alt="Generated Image">
+            {% endif %}
+        </form>
+        <br>
+        <button id="backBtn" class="btn">Back</button>
+        <br>
+        <br>
+
+        <button id="editorBtn" class="btn">Editor</button>
+        
     </div>
 
     <script>
         const domButton = document.getElementById('domButton');
         const harButton = document.getElementById('harButton');
-        const fileInput = document.getElementById('fileInput');
-        const uploadBtn = document.getElementById('uploadBtn');
+        const domForm = document.getElementById('domForm');
+        const harForm = document.getElementById('harForm');
 
         domButton.addEventListener('click', function () {
-            setActiveFileType('.dom');
+            domButton.classList.add('active');
+            harButton.classList.remove('active');
+            domForm.style.display = 'block';
+            harForm.style.display = 'none';
         });
 
         harButton.addEventListener('click', function () {
-            setActiveFileType('.har');
+            harButton.classList.add('active');
+            domButton.classList.remove('active');
+            harForm.style.display = 'block';
+            domForm.style.display = 'none';
         });
 
         editorBtn.addEventListener('click', function () {
             window.open('http://localhost:5500'); 
         });
 
-        function setActiveFileType(fileType) {
-            fileInput.setAttribute('accept', fileType);
-            domButton.classList.toggle('active', fileType === '.dom');
-            harButton.classList.toggle('active', fileType === '.har');
-            fileInput.value = ''; // Reset file input
-            uploadBtn.style.display = 'none'; // Hide upload button until new file is chosen
-        }
-
-        fileInput.addEventListener('change', function () {
-            if (fileInput.files.length > 0) {
-                uploadBtn.style.display = 'inline-block';
-            } else {
-                uploadBtn.style.display = 'none';
-            }
+        backBtn.addEventListener('click', function () {
+            window.location.href = 'http://127.0.0.1:5000/';
         });
 
-        uploadBtn.addEventListener('click', function () {
-            // Implement the actual upload functionality here
-            alert('Upload functionality to be implemented.');
-        });
+
+
     </script>
 </body>
 

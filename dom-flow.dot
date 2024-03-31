@@ -1,0 +1,25 @@
+digraph DOMFlowchart {
+    node [shape=ellipse, style="filled", fontname="Arial", fontsize=12];
+    edge [fontname="Arial", color=gray, penwidth=1.5];
+    
+    html [label="<html>", shape=box, fillcolor="#90EE90", fontsize=10];
+    head [label="<head>", shape=box, fillcolor="#90EE90", fontsize=10];
+    title [label="<title>", shape=box, fillcolor="#90EE90", fontsize=10];
+    body [label="<body>", shape=box, fillcolor="#90EE90", fontsize=10];
+    div1 [label="<div id='container'>", shape=box, fillcolor="#90EE90", fontsize=10];
+    h1 [label="<h1>", shape=box, fillcolor="#90EE90", fontsize=10];
+    p1 [label="<p class='intro'>", shape=box, fillcolor="#90EE90", fontsize=10];
+    p2 [label="<p class='content'>", shape=box, fillcolor="#90EE90", fontsize=10];
+    img1 [label="<img>", shape=box, fillcolor="#90EE90", fontsize=10];
+    a1 [label="<a>", shape=box, fillcolor="#90EE90", fontsize=10];
+    
+    html -> head;
+    html -> body;
+    head -> title;
+    body -> div1;
+    div1 -> h1;
+    div1 -> p1;
+    div1 -> p2;
+    div1 -> img1;
+    div1 -> a1;
+}
