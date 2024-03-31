@@ -125,7 +125,7 @@
             <label for="fileInput">Select File:</label>
             <input type="file" id="fileInput" accept=".dom,.har">
         </div>
-        <button id="uploadBtn" class="upload-btn">Upload File</button>
+        <button id="editorBtn" class="upload-btn">Editor</button>
     </div>
 
     <script>
@@ -140,6 +140,10 @@
 
         harButton.addEventListener('click', function () {
             setActiveFileType('.har');
+        });
+
+        editorBtn.addEventListener('click', function () {
+            window.open('http://localhost:5500'); 
         });
 
         function setActiveFileType(fileType) {
