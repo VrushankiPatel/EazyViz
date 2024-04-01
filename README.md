@@ -18,4 +18,4 @@ Recognized for its innovative integration of TinyMCE Cloud API and OpenAI, EazyV
 
 ## Demo
 
-Check out our [demo](https://www.youtube.com/watch?v=your-video-id)!
+Check out our [demo]([https://www.youtube.com/watch?v=your-video-id](https://youtu.be/cwSXjGs-C4Q?si=ts_FUt2eFY1QBaDp))!
