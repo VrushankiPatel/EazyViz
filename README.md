@@ -1,5 +1,5 @@
 # DiamondHacks24
-
+## EazyViz
 Introducing EazyViz: Empowering Developers with Seamless Visualization and Debugging
 
 EazyViz isn't just another tool in the developer's arsenal; it's a comprehensive platform meticulously crafted to revolutionize the way developers, beginners, and debuggers interact with their code. At its core, EazyViz amalgamates cutting-edge technologies to provide a user-friendly portal that caters to a diverse range of users, regardless of their expertise level.
