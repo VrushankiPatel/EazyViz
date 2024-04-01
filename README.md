@@ -15,3 +15,7 @@ JavaScript Visualization : JavaScript visualization within EazyViz refers to the
 The beauty of EazyViz lies in its versatility; it caters to the needs of developers at every stage of their journey. From providing essential insights into webpage structures to offering advanced debugging capabilities and fostering an environment for code exploration and education, EazyViz is the quintessential all-in-one solution for today's tech-savvy professionals.
 
 Recognized for its innovative integration of TinyMCE Cloud API and OpenAI, EazyViz stands tall as the epitome of "Best Use of AI in Education." With EazyViz, the future of development is not just within reach—it's seamlessly integrated into every line of code.
+
+## Demo
+
+Check out our [demo](https://www.youtube.com/watch?v=your-video-id)!
